@@ -3,5 +3,5 @@
   hosts: all
   tasks:
     - name: Dame un mensaje
-      ansible.buitin.debug:
+      ansible.builtin.debug:
         msg: "Bienvenido al hermoso mundo de ansible"
