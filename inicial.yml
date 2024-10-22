@@ -3,5 +3,10 @@
   hosts: all
   tasks:
     - name: Dame un mensaje
-      ansible.builtin.debug:
+      ansible.buitin.debug:
         msg: "Bienvenido al hermoso mundo de ansible"
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
