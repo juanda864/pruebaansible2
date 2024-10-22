@@ -4,9 +4,11 @@
   tasks:
 
     - name: ejecutar el playbook diario a las 16:05
+      become: true
       ansible.builtin.cron:
         name: "Parchar servidores diariamente"
         minute: "5"
         hour: "16"
         job: "Parchado /pruebaansible2/parchar.yml"
         user: deploy
+    
