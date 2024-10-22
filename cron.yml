@@ -10,5 +10,5 @@
         minute: "5"
         hour: "16"
         job: "Parchado /pruebaansible2/parchar.yml"
-        user: deploy
+        user: ec2-user
     
