@@ -6,6 +6,7 @@
     var_system_crypto_policy: DEFAULT
     var_account_disable_post_pw_expiration: '30'
     var_accounts_maximum_age_login_defs: '100'
+    with-faillock: with-faillock
 
   tasks:
     - name: Dame un mensaje
@@ -69,4 +70,16 @@
           enabled: 'no'
           state: stoped
           masked: 'yes'
-        become: true
+      become: true
+
+    - name: Regla 8. Ensure sudo is installed in Guandolos
+      package:
+        name: sudo
+        state: present
+      become: true
+
+    - name: Regla 9. Install with-faillock in Guandolos
+      package:
+        name: '{{ with-faillock }}'
+        state: present
+      become: true
