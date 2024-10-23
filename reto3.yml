@@ -66,10 +66,11 @@
         state: present
       become: true
 
-    - name: Regla 9. Install with-faillock in Guandolos
-      package:
-        name: '{{ var_with_faillock }}'
-        state: present
+    - name: Regla 9. Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server - Restart Rsyslog if Any Line Were Commented
+        Out
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
       become: true
 
     - name: Regla 10. Lock Accounts After Failed Password Attempts - Ensure "with-faillock" feature is enabled using authselect tool
