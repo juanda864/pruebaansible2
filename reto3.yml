@@ -68,7 +68,7 @@
         systemd:
           name: firewalld
           enabled: 'no'
-          state: stoped
+          state: stopped
           masked: 'yes'
       become: true
 
