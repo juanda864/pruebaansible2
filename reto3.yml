@@ -59,17 +59,8 @@
       register: user_names
       become: true
 
-    - name: Regla 7. Enable service firewalld in Guandolos
-      block:
-      - name: Gather the package facts
-        package_facts:
-          manager: auto
-      - name: Enable service firewalld
-        systemd:
-          name: firewalld
-          enabled: 'no'
-          state: stopped
-          masked: 'yes'
+    - name: Regla 7. 
+      
       become: true
 
     - name: Regla 8. Ensure sudo is installed in Guandolos
