@@ -7,6 +7,7 @@
     var_account_disable_post_pw_expiration: '30'
     var_accounts_maximum_age_login_defs: '100'
     var_with_faillock: with-faillock
+  
 
   tasks:
     - name: Dame un mensaje
@@ -59,36 +60,22 @@
       register: user_names
       become: true
 
-    - name: Regla 8. Lock Accounts After Failed Password Attempts - Remediation where authselect tool is not present in Guandolos
-      block:
-      - name: Lock Accounts After Failed Password Attempts - Check if pam_faillock.so is already enabled
-        ansible.builtin.lineinfile:
-          path: /etc/pam.d/system-auth
-          regexp: .*auth.*pam_faillock\.so (preauth|authfail)
-          state: absent
-        check_mode: true
-        changed_when: false
-        register: result_pam_faillock_is_enabled
-      - name: Lock Accounts After Failed Password Attempts - Enable pam_faillock.so preauth editing PAM files
-        ansible.builtin.lineinfile:
-          path: '{{ item }}'
-          line: auth        required      pam_faillock.so preauth
-          insertbefore: ^auth.*sufficient.*pam_unix\.so.*
-          state: present
-      become: true
-
-    - name: Regla 9. Ensure sudo is installed in Guandolos
+    - name: Regla 8. Ensure sudo is installed in Guandolos
       package:
         name: sudo
         state: present
       become: true
 
-    - name: Regla 10. Install with-faillock in Guandolos
+    - name: Regla 9. Install with-faillock in Guandolos
       package:
         name: '{{ var_with_faillock }}'
         state: present
       become: true
 
-   
+    - name: Regla 10. Lock Accounts After Failed Password Attempts - Ensure "with-faillock" feature is enabled using authselect tool
+      ansible.builtin.command:
+        cmd: authselect enable-feature with-faillock
+      register: result_authselect_enable_feature_cmd
+      become: true
     
     
