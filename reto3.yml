@@ -6,7 +6,7 @@
     var_system_crypto_policy: DEFAULT
     var_account_disable_post_pw_expiration: '30'
     var_accounts_maximum_age_login_defs: '100'
-    var_with_faillock: with-faillock
+    var_with_faillock: faillock
   
 
   tasks:
