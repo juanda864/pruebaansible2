@@ -6,7 +6,7 @@
     var_system_crypto_policy: DEFAULT
     var_account_disable_post_pw_expiration: '30'
     var_accounts_maximum_age_login_defs: '100'
-    with-faillock: with-faillock
+    var_with_faillock: with-faillock
 
   tasks:
     - name: Dame un mensaje
@@ -80,6 +80,6 @@
 
     - name: Regla 9. Install with-faillock in Guandolos
       package:
-        name: '{{ with-faillock }}'
+        name: '{{ var_with_faillock }}'
         state: present
       become: true
