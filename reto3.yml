@@ -1,6 +1,10 @@
 ---
 - name: Parcha un conjunto de servidores linux
   hosts: all
+  vars:
+    cron_pkg_name: 'systemd-cron'
+    var_system_crypto_policy:
+
   tasks:
     - name: Dame un mensaje
       ansible.builtin.debug:
