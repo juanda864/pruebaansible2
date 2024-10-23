@@ -14,6 +14,7 @@
       package:
         name: '{{ cron_pkg_name }}'
         state: present
+      become: true
     
     - name: Regla 2. Configure System Cryptography Policy in Guandolos
       lineinfile:
@@ -21,11 +22,14 @@
         regexp: ^(?!#)(\S+)$
         line: '{{ var_system_crypto_policy }}'
         create: true
+      become: true  
 
     - name: Verify that Crypto Policy is Set (runtime) in Guandolos
       command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+      become: true
 
     - name: Regla 3. Ensure gdm is removed
       package:
         name: gdm
         state: absent
+      become: true
