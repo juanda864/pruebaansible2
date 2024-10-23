@@ -4,6 +4,8 @@
   vars:
     cron_pkg_name: chrony
     var_system_crypto_policy: DEFAULT
+    var_account_disable_post_pw_expiration: '30'
+    var_accounts_maximum_age_login_defs: '100'
 
   tasks:
     - name: Dame un mensaje
@@ -33,3 +35,38 @@
         name: gdm
         state: absent
       become: true
+
+    - name: Regla 4. Set Account Expiration Following Inactivity
+      lineinfile:
+        create: true
+        dest: /etc/default/useradd
+        regexp: ^INACTIVE
+        line: INACTIVE={{ var_account_disable_post_pw_expiration }}
+      become: true
+    
+    - name: Regla 5. Set Password Maximum Age
+      lineinfile:
+        create: true
+        dest: /etc/login.defs
+        regexp: ^#?PASS_MAX_DAYS
+        line: PASS_MAX_DAYS {{ var_accounts_maximum_age_login_defs }}
+      become: true
+    
+    - name: Regla 6. Collect users with not correct maximum time period between password changes in Guandolos
+      ansible.builtin.command:
+        cmd: awk -F':' '(/^[^:]+:[^!*]/ && ($5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "")) {print $1}' /etc/shadow
+      register: user_names
+      become: true
+
+    - name: Regla 7. Enable service firewalld in Guandolos
+      block:
+      - name: Gather the package facts
+        package_facts:
+          manager: auto
+      - name: Enable service firewalld
+        systemd:
+          name: firewalld
+          enabled: 'no'
+          state: stoped
+          masked: 'yes'
+        become: true
