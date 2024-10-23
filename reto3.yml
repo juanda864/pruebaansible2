@@ -1,0 +1,27 @@
+---
+- name: Parcha un conjunto de servidores linux
+  hosts: all
+  tasks:
+    - name: Dame un mensaje
+      ansible.builtin.debug:
+        msg: "Bienvenido al hermoso mundo de ansible - Los Guandolos y las Reglas"
+
+    - name: Regla 1. Install cron in Guandolos
+      package:
+        name: '{{ cron_pkg_name }}'
+        state: present
+    
+    - name: Regla 2. Configure System Cryptography Policy in Guandolos
+      lineinfile:
+        path: /etc/crypto-policies/config
+        regexp: ^(?!#)(\S+)$
+        line: '{{ var_system_crypto_policy }}'
+        create: true
+
+    - name: Verify that Crypto Policy is Set (runtime) in Guandolos
+      command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+
+    - name: Regla 3. Ensure gdm is removed
+      package:
+        name: gdm
+        state: absent
