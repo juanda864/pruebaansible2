@@ -27,17 +27,17 @@
         create: true
       become: true  
 
-    - name: Verify that Crypto Policy is Set (runtime) in Guandolos
+    - name: Regla 3. Verify that Crypto Policy is Set (runtime) in Guandolos
       command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
       become: true
 
-    - name: Regla 3. Ensure gdm is removed
+    - name: Regla 4. Ensure gdm is removed
       package:
         name: gdm
         state: absent
       become: true
 
-    - name: Regla 4. Set Account Expiration Following Inactivity
+    - name: Regla 5. Set Account Expiration Following Inactivity
       lineinfile:
         create: true
         dest: /etc/default/useradd
@@ -45,7 +45,7 @@
         line: INACTIVE={{ var_account_disable_post_pw_expiration }}
       become: true
     
-    - name: Regla 5. Set Password Maximum Age
+    - name: Regla 6. Set Password Maximum Age
       lineinfile:
         create: true
         dest: /etc/login.defs
@@ -53,13 +53,13 @@
         line: PASS_MAX_DAYS {{ var_accounts_maximum_age_login_defs }}
       become: true
     
-    - name: Regla 6. Collect users with not correct maximum time period between password changes in Guandolos
+    - name: Regla 7. Collect users with not correct maximum time period between password changes in Guandolos
       ansible.builtin.command:
         cmd: awk -F':' '(/^[^:]+:[^!*]/ && ($5 > {{ var_accounts_maximum_age_login_defs }} || $5 == "")) {print $1}' /etc/shadow
       register: user_names
       become: true
 
-    - name: Regla 7. Lock Accounts After Failed Password Attempts - Remediation where authselect tool is not present in Guandolos
+    - name: Regla 8. Lock Accounts After Failed Password Attempts - Remediation where authselect tool is not present in Guandolos
       block:
       - name: Lock Accounts After Failed Password Attempts - Check if pam_faillock.so is already enabled
         ansible.builtin.lineinfile:
@@ -77,19 +77,19 @@
           state: present
       become: true
 
-    - name: Regla 8. Ensure sudo is installed in Guandolos
+    - name: Regla 9. Ensure sudo is installed in Guandolos
       package:
         name: sudo
         state: present
       become: true
 
-    - name: Regla 9. Install with-faillock in Guandolos
+    - name: Regla 10. Install with-faillock in Guandolos
       package:
         name: '{{ var_with_faillock }}'
         state: present
       become: true
 
-    - name: Regla 10. Lock Accounts After Failed Password Attempts - Ensure "with-faillock" feature is enabled using authselect tool
+    - name: Regla 11. Lock Accounts After Failed Password Attempts - Ensure "with-faillock" feature is enabled using authselect tool
       ansible.builtin.command:
         cmd: authselect enable-feature with-faillock
       register: result_authselect_enable_feature_cmd
