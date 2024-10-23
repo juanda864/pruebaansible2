@@ -2,7 +2,7 @@
 - name: Parcha un conjunto de servidores linux
   hosts: all
   vars:
-    cron_pkg_name: sudo install chrony
+    cron_pkg_name: chrony
     var_system_crypto_policy: DEFAULT
 
   tasks:
