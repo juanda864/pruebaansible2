@@ -4,7 +4,7 @@
   tasks:
     - name: Dame un mensaje
       ansible.builtin.debug:
-        msg: "Bienvenido al hermoso mundo de ansible - Los Guandolos y las Reglas"
+        msg: "Los Ganadores - Los Guandolos y las Reglas"
 
     - name: Regla 1. Install cron in Guandolos
       package:
